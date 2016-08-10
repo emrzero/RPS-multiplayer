@@ -1,0 +1,27 @@
+/*#arena {
+  width: 90%;
+  height: 50%;
+  margin: 0 auto;
+  background-color: #E4F4FA;
+}*/
+* {
+  border-radius: 5px;
+}
+
+header {
+  margin: 20px;
+}
+
+#playerOneBox, #playerTwoBox, #matchBox {
+  height: 300px !important;
+}
+
+#matchBox {
+  background-color: #E4F4FA;
+}
+
+#chatLog {
+  height: 200px;
+  background-color: #F7F1D9;
+  margin-bottom: 20px;
+}

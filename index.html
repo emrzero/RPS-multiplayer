@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap - Latest compiled and minified CSS  -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="assets/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
+
+    <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
+
+    <title>
+      Rock - Paper - Scissors
+    </title>
+  </head>
+  <body>
+    
+    <div class="container text-center">
+      <header>
+        <h1> Rock Paper Scissors</h1>
+        <input type="text" name="name">
+        <button type="button" class="btn btn-large" id="submitName"> Play!</button>
+      </header>
+      
+      <div id="arena" class="row">
+
+        <div id="playerOneBox" class="col-lg-4">
+          <h3>Player One</h3>
+        </div>
+
+        <div id="matchBox" class="col-lg-4">
+          <h3>Match Results</h3>
+        </div>
+
+        <div id="playerTwoBox" class="col-lg-4">
+          <h3>Player Two</h3>
+        </div>
+
+      </div> <!-- End Row -->
+      
+
+      <div class="row">
+        <div class= "col-lg-2"></div>
+        <div class= "col-lg-8">
+          <h3>Chat</h3>
+          <div id="chatLog">
+          </div>
+          <input type="text" name="message">
+          <button type="button" class="btn btn-large" id="send">Send</button>
+        </div>
+        <div class= "col-lg-2"></div>
+      </div> <!-- End Row -->
+
+      <footer class="footer">
+        <h5> Copyright &copy; Eliot Reyes 2016</h5>
+      </footer>
+    </div>
+
+    
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  </body>
+</html>
