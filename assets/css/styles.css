@@ -12,6 +12,10 @@ header {
   margin: 20px;
 }
 
+li {
+  list-style: none;
+}
+
 #playerOneBox, #playerTwoBox, #matchBox {
   height: 300px !important;
 }
@@ -25,3 +29,4 @@ header {
   background-color: #F7F1D9;
   margin-bottom: 20px;
 }
+
