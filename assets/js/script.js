@@ -13,7 +13,7 @@
 //Begin session experiment
 // var connectionsRef = database.ref("/connections");
 
-var connectedRef = database.ref(".info/connected");
+// var connectedRef = database.ref(".info/connected");
 
 // connectedRef.on('value', function(snapshot){
 //   if (snapshot.val()){
@@ -30,6 +30,14 @@ var connectedRef = database.ref(".info/connected");
 var playerNum = 0;
 var readyForMatch = false;
 
+var localMatchStats ={
+  opponent: "",
+  turn: 0,
+  p1Choice: "",
+  p2Choice: "",
+  roundOver: false
+}
+
 database.ref('players').once('value').then(function(snapshot){
   if (snapshot.val() == null){
     console.log("no players yet");
@@ -43,7 +51,8 @@ database.ref('players').once('value').then(function(snapshot){
     readyForMatch = true;
     playerNum = 2;
     console.log('You are player ' + playerNum);
-    $('#playerOneBox').find('h3').text(snapshot.val().p1.name);
+    localMatchStats.opponent = snapshot.val().p1.name;
+    $('#playerOneBox').find('h3').text(localMatchStats.opponent);
   }
 
   else if (Object.keys(snapshot.val()).length == 2){
@@ -74,9 +83,12 @@ playersRef.on('child_added', function(snapshot, prevChildKey){
     database.ref('players').once('value').then(function(snapshot){
       try{
         console.log(snapshot.val().p2.name);
-        $('#playerTwoBox').find('h3').text(snapshot.val().p2.name);
+        localMatchStats.opponent = snapshot.val().p2.name;
+        $('#playerTwoBox').find('h3').text(localMatchStats.opponent);
         printChoices('playerOne');
         weaponChoiceListener();
+        // $('#matchBox').find('h3').text("It's your turn");
+        matchMessage("It's your turn")
       }
 
       catch(err){
@@ -84,11 +96,14 @@ playersRef.on('child_added', function(snapshot, prevChildKey){
       }
  
     });
-  } else if (playerNum == 2 ){
+  } 
+
+  else if (playerNum == 2 ){
     $('#playerTwoBox').find('h3').text(snapshot.val().name);
     printChoices('playerTwo');
     weaponChoiceListener();
     database.ref().update({turn : 1});
+    $('#matchBox').find('h3').text("Waiting for " + localMatchStats.opponent + " to choose");
     if (readyForMatch == false){
       $('#playerOneBox').find('h3').text("Waiting for Player One");
     }
@@ -106,6 +121,9 @@ playersRef.on('child_removed', function(snapshot){
     $('#playerTwoBox').find('h3').text("Waiting for Player Two");
   } else if(playerNum == 2){
     $('#playerOneBox').find('h3').text("Waiting for Player One");
+  } else {
+    $('#playerOneBox').find('h3').text("Waiting for Player One");
+    $('#playerTwoBox').find('h3').text("Waiting for Player Two");
   }
 
 });
@@ -132,7 +150,7 @@ var choices = ['rock', 'paper', 'scissors'];
 $('#submitName').on('click', function(){
   playerObj.name = $('#inputName').val();
   $('#sectionNameInput').html('<h2>Hi ' + playerObj.name + ' you are Player ' + playerNum);
-  var k = "p" + playerNum
+  var k = "p" + playerNum;
   var playerSession = database.ref("players").update({ [k] : playerObj});
 
   try {
@@ -185,19 +203,42 @@ function matchMessage(msg){
 
 function weaponChoiceListener() {
   $('.weapon').on('click',function(){
+    localMatchStats["p" + playerNum + "Choice"] = $(this).data('weapon');
+    $('.weapon').detach();
+    matchMessage("You chose " + localMatchStats["p" + playerNum + "Choice"])
+    database.ref('players/p' + playerNum).update({choice :localMatchStats["p" + playerNum + "Choice"]});
     database.ref('turn').once('value').then(function(snapshot){
-      // console.log(snapshot.val());
-      // database.ref().update({turn : 1});
       if (snapshot.val() == 1){
-        console.log("It's player one's turn, now toggling.");
+        // console.log("It's player one's turn, now toggling.");
         database.ref().update({turn: 2});
       } else{
-        console.log("It's player two's turn, now toggling.");
+        // console.log("It's player two's turn, now toggling.");
         database.ref().update({turn: 1});
       }
+      localMatchStats.turn = snapshot.val();
     });
   });
 }
+
+database.ref('turn').on('value', function(snapshot){
+  // console.log(snapshot.val());
+  localMatchStats.turn = snapshot.val();
+  if (localMatchStats.turn == 1 ){
+    if (playerNum == 1){
+      matchMessage("It's your turn");
+    } else if(playerNum == 2){
+      matchMessage("Wating for " + localMatchStats.opponent + " to choose");
+    }
+    
+  } else if(localMatchStats.turn == 2){
+    if(playerNum == 2){
+      matchMessage("It's your turn");
+    } else if(playerNum == 1){
+      matchMessage("Wating for " + localMatchStats.opponent + " to choose");
+    }
+    
+  }
+});
 
 // function weaponChoiceListener (){
 //   $('.weapon').on('click',function(){
