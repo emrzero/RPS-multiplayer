@@ -31,7 +31,6 @@ var playerObj = {
   losses: 0
 }
 
-$('#matchBox').toggleClass('seeMe');
 
 var playersRef = database.ref('players');
 
@@ -57,8 +56,6 @@ playersRef.on('child_added', function(snapshot, prevChildKey){
     } else {
       database.ref('chat').push({name: "server", message: "We're ready for a match. Initializing game..."});
       initializeGame();
-      $('#matchBox').toggleClass('seeMe');
-      $('#p1Box').toggleClass('seeMe');
     }    
   }); 
 
@@ -119,8 +116,6 @@ function initializeGame(){
       printChoices("p2");
       weaponChoiceListener();
       matchMessage('Your turn!');
-      $('#p1Box').toggleClass('seeMe');
-      $('#p2Box').toggleClass('seeMe');
     }
 
   });
@@ -160,24 +155,17 @@ $('#submitName').on('click', function(){
 
 });
 
-$("#inputName").keyup(function(event){
-    if(event.keyCode == 13){
-        $("#submitName").click();
-    }
-});
 
 function printChoices(player){
   var box = $('#' + player + 'Choice');
   box.empty();
   for (c in choices){
     var l = $('<button>');
-    l.addClass('btn btn-link')
     l.data('weapon', choices[c]);
     l.data('player', player);
     l.addClass('weapon');
     l.html(choices[c]);
     box.append(l);
-    box.append("<br>");
   }
 
 }
@@ -215,8 +203,6 @@ function nextRound(){
   localMatchStats.roundOver = false;
   $('#p2Choice').text('');
   beginRound();
-  $('#p2Box').toggleClass('seeMe');
-  $('#p1Box').toggleClass('seeMe');
 }
 
 
@@ -239,7 +225,7 @@ function compareWeapons (p1, p2){
         break;
 
       case("p2"):
-        matchMessage("You lose.");
+        matchMessage("You loose.");
         break;
     }
 
@@ -265,7 +251,7 @@ function compareWeapons (p1, p2){
         break;
 
       case("p1"):
-        matchMessage("You lose.");
+        matchMessage("You loose.");
         break;
     }
 
@@ -310,16 +296,9 @@ chatRef.on('child_added', function(snapshot){
   l.append(': ');
   l.append(snapshot.val().message);
   $('#chatLog').append(l);
-  document.getElementById( 'chatLog' ).scrollIntoView();
 
 });
 
-
-$("#message").keyup(function(event){
-    if(event.keyCode == 13){
-        $("#send").click();
-    }
-});
 //End Chat functionality
 
 

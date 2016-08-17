@@ -24,28 +24,13 @@ span {
   height: 300px !important;
 }
 
-.seeMe {
+#matchBox {
   background-color: #E4F4FA;
-}
-
-#matchResultsTextBox {
-  font-size: 4em;
-}
-
-#p1Choice, #p2Choice {
-  font-size: 3em;
-}
-
-#p1Stats, #p2Stats {
-  position: absolute;
-  bottom: -1px !important;
 }
 
 #chatLog {
   height: 200px;
-  width: 100%;
-  /*background-color: #F7F1D9;*/
+  background-color: #F7F1D9;
   margin-bottom: 20px;
-  border-style: solid;
-  border-width: 1px;
 }
+
